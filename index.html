@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>春节特辑·廉节不失节</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        /* --- 国风配色方案 --- */
+        :root {
+            --cny-red: #9E2A2B;
+            --cny-gold: #D4AF37;
+            --cny-bg: #F7F5F0;
+            --cny-ink: #2D3436;
+            --cny-blue: #3E5F8A;
+        }
+
+        body {
+            font-family: "Noto Serif SC", serif;
+            background-color: #EBE8E1;
+            color: var(--cny-ink);
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
+        }
+
+        .font-calligraphy { font-family: "Ma Shan Zheng", cursive; }
+        .font-sans-std { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .bg-rice-paper {
+            background-color: var(--cny-bg);
+            background-image: 
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239E2A2B' fill-opacity='0.03'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .page-transition { transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .page-hidden { opacity: 0; pointer-events: none; z-index: 0; transform: scale(0.98) translateY(10px); }
+        .page-active { opacity: 1; pointer-events: auto; z-index: 10; transform: scale(1) translateY(0); }
+
+        .cny-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(45, 52, 54, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .cny-card::before, .cny-card::after {
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid var(--cny-gold);
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .cny-card::before { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+        .cny-card::after { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+
+        .cny-btn-seal {
+            background: var(--cny-red);
+            color: #FDFBF7;
+            border: 2px solid #822223;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1), 0 6px 15px rgba(158, 42, 43, 0.3);
+            position: relative;
+            transition: all 0.2s;
+        }
+        .cny-btn-seal:active { transform: translateY(2px); box-shadow: 0 2px 8px rgba(158, 42, 43, 0.3); }
+        
+        .cny-btn-gold {
+            background: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+            color: #FFF;
+            border: 1px solid #B8860B;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+            position: relative;
+            transition: all 0.2s;
+        }
+        .cny-btn-gold:active { transform: scale(0.98); }
+
+        .scroll-track {
+            background: #E0DCD3;
+            border-radius: 99px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #D1CCC0;
+        }
+        .scroll-bar {
+            background-image: linear-gradient(90deg, #B8860B 0%, #D4AF37 50%, #B8860B 100%);
+            border-radius: 99px;
+            position: relative;
+        }
+        .scroll-bar::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -2px;
+            bottom: -2px;
+            width: 6px;
+            background: #5D4037;
+            border-radius: 2px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .chat-paper {
+            background: #FEFCF8;
+            border: 1px solid #EAE0D5;
+            border-radius: 8px;
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        .chat-paper::before {
+            content: "";
+            position: absolute;
+            left: 6px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background-color: rgba(158, 42, 43, 0.1);
+        }
+
+        .option-paper {
+            background: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-left: 4px solid #D4AF37;
+            transition: all 0.2s;
+        }
+        .option-paper:active {
+            background: #FFFBF0;
+            border-color: var(--cny-gold);
+        }
+
+        .sheet-paper {
+            background-color: #FDFBF7;
+            background-image: linear-gradient(to bottom, #FDFBF7 0%, #F5F1E8 100%);
+            border-top: 4px solid var(--cny-red);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.15);
+        }
+
+        /* AI 福签卡片样式 */
+        .fortune-card {
+            background-color: #9E2A2B;
+            background-image: radial-gradient(circle at 50% 0, #B83A3B, #9E2A2B);
+            border: 2px solid #D4AF37;
+            box-shadow: 0 10px 30px rgba(158, 42, 43, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .fortune-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23D4AF37' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0eg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .animate-shake {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col items-center bg-[#D6D2C4]">
+
+    <div class="w-full h-full max-w-[440px] relative bg-rice-paper sm:shadow-2xl sm:h-[95vh] sm:my-auto sm:rounded-[24px] overflow-hidden flex flex-col border border-[#C9C5B9]">
+        
+        <div class="absolute top-0 left-0 right-0 h-2 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgMjAgOCI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOUUyQTJCIiBzdHJva2Utb3BhY2l0eT0iMC4yIiBkPSJNMCA4YzUtNCA1LTQgMTAtNHM1IDAgMTAtNHoiLz48L3N2Zz4=')] opacity-50 z-20"></div>
+
+        <header id="nav-header" class="absolute top-0 left-0 right-0 z-20 px-6 pt-10 pb-4 flex justify-between items-end transition-transform duration-500 -translate-y-full bg-rice-paper/90 backdrop-blur-sm border-b border-[#D4AF37]/20">
+            <div class="flex flex-col gap-1">
+                <span class="text-[10px] font-bold text-[#9E2A2B] uppercase tracking-[0.2em]">当前状态</span>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-sm text-[#5D4037]">福气值</span>
+                    <span id="score-display" class="text-2xl font-bold text-[#9E2A2B] tabular-nums leading-none">100</span>
+                </div>
+            </div>
+            <div class="w-32 h-3 scroll-track">
+                <div id="progress-bar" class="h-full scroll-bar transition-all duration-700" style="width: 100%"></div>
+            </div>
+        </header>
+
+        <main class="flex-grow relative w-full h-full overflow-hidden z-10">
+            
+            <div id="page-start" class="absolute inset-0 flex flex-col items-center justify-center px-8 z-10 page-transition page-active bg-rice-paper">
+                <div class="absolute top-0 right-8 w-12 h-32 opacity-90 pointer-events-none">
+                     <svg viewBox="0 0 60 160" fill="none">
+                         <path d="M30 0v20" stroke="#9E2A2B" stroke-width="2"/>
+                         <path d="M30 20 L10 40 L30 60 L50 40 Z" fill="#9E2A2B" />
+                         <rect x="25" y="35" width="10" height="10" transform="rotate(45 30 40)" fill="#D4AF37"/>
+                         <path d="M30 60v10 M20 70v60 M25 70v55 M30 70v65 M35 70v55 M40 70v60" stroke="#9E2A2B" stroke-width="1.5"/>
+                         <circle cx="30" cy="65" r="4" fill="#1ABC9C"/>
+                     </svg>
+                </div>
+
+                <div class="mb-10 flex items-center gap-2 opacity-80">
+                    <div class="w-8 h-px bg-[#9E2A2B]"></div>
+                    <span class="text-[#9E2A2B] text-xs font-bold tracking-[0.2em]">春节廉洁特辑</span>
+                    <div class="w-8 h-px bg-[#9E2A2B]"></div>
+                </div>
+
+                <div class="relative w-40 h-40 mb-12 flex items-center justify-center group cursor-pointer">
+                    <div class="absolute inset-0 bg-[#9E2A2B] transform rotate-45 shadow-xl border-4 border-[#FDFBF7] outline outline-1 outline-[#D4AF37]">
+                        <svg class="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 100 100">
+                            <circle cx="10" cy="20" r="1" fill="#FFD700"/>
+                            <circle cx="80" cy="80" r="1.5" fill="#FFD700"/>
+                            <circle cx="30" cy="90" r="1" fill="#FFD700"/>
+                            <circle cx="90" cy="10" r="2" fill="#FFD700"/>
+                        </svg>
+                    </div>
+                    <span class="relative z-10 text-7xl text-[#FDFBF7] font-calligraphy select-none drop-shadow-md pt-2">福</span>
+                </div>
+
+                <div class="text-center mb-16 relative">
+                    <h1 class="text-5xl font-bold text-[#2C3E50] tracking-tight mb-2 flex flex-col items-center gap-1">
+                        <span class="text-2xl font-normal opacity-70 tracking-[0.5em] mb-1">过节</span>
+                        <span class="relative">
+                            不失节
+                            <span class="absolute -bottom-2 left-0 right-0 h-1 bg-[#9E2A2B]/20 rounded-full"></span>
+                        </span>
+                    </h1>
+                    <p class="text-sm text-[#5D4037] mt-4 font-serif-sc tracking-[0.3em] opacity-80">
+                        守住底线 · 也是团圆
+                    </p>
+                </div>
+
+                <button onclick="game.start()" class="cny-btn-seal w-48 h-16 rounded-lg text-xl font-bold tracking-[0.5em] flex items-center justify-center group">
+                    <span class="group-hover:scale-105 transition-transform">入局</span>
+                </button>
+                
+                <div class="absolute bottom-8 text-[10px] text-[#A0A0A0] tracking-widest uppercase flex flex-col items-center gap-1">
+                    <span class="w-1 h-8 bg-[#D4AF37]/30 mb-2"></span>
+                    风清气正 · 阖家幸福
+                </div>
+            </div>
+
+            <!-- 2. 游戏主界面 -->
+            <div id="page-game" class="absolute inset-0 flex flex-col page-transition page-hidden z-0 bg-rice-paper">
+                <div class="h-28 flex-shrink-0"></div> 
+
+                <div id="game-scroll-area" class="flex-grow overflow-y-auto px-6 pb-36 no-scrollbar scroll-smooth">
+                    <div class="cny-card mb-8 group bg-white">
+                        <div class="h-60 bg-[#EAE0D5] relative overflow-hidden">
+                            <img id="scene-img" src="" class="w-full h-full object-cover mix-blend-multiply opacity-90 transition-transform duration-1000 group-hover:scale-105" alt="Scene">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#2C3E50] to-transparent opacity-90"></div>
+                            
+                            <div class="absolute bottom-5 left-5 text-[#FDFBF7] border-l-2 border-[#D4AF37] pl-3">
+                                <div class="text-[10px] opacity-80 tracking-widest mb-1">当前身份</div>
+                                <h2 id="scene-role-name" class="text-2xl font-bold tracking-wide">角色名</h2>
+                            </div>
+                        </div>
+                        <div class="p-6 relative">
+                            <div class="absolute top-4 right-4 w-12 h-12 border-2 border-[#9E2A2B]/20 rounded-full flex items-center justify-center transform rotate-12 opacity-50">
+                                <span class="text-[10px] text-[#9E2A2B] font-bold writing-vertical">春节</span>
+                            </div>
+                            <p id="scene-text" class="text-[#4A4A4A] text-[15px] leading-7 text-justify font-serif-sc">场景描述...</p>
+                        </div>
+                    </div>
+
+                    <div id="dialogue-area" class="space-y-6 mb-12 px-1">
+                        <!-- JS 注入 -->
+                    </div>
+
+                    <div class="mb-10 mx-1 relative py-4 px-2">
+                        <div class="absolute left-0 top-0 bottom-0 w-px bg-[#D4AF37] opacity-50"></div>
+                        <div class="absolute right-0 top-0 bottom-0 w-px bg-[#D4AF37] opacity-50"></div>
+                        <div class="text-center mb-3">
+                            <span class="bg-rice-paper px-2 text-[10px] font-bold text-[#9E2A2B] tracking-[0.3em] relative z-10">内心独白</span>
+                            <div class="h-px bg-[#D4AF37] opacity-30 absolute top-7 left-10 right-10"></div>
+                        </div>
+                        <p id="monologue-text" class="text-[#5D4037] text-sm font-serif-sc italic leading-relaxed text-center px-4">
+                            独白...
+                        </p>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 right-0 p-6 bg-[#F7F5F0] border-t border-[#D4AF37]/20 pt-6">
+                    <button onclick="ui.showOptions()" class="cny-btn-seal w-full py-4 rounded-lg text-lg font-bold shadow-xl flex items-center justify-center gap-3 tracking-[0.2em]">
+                        <span>做出抉择</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. 结算页面 -->
+            <div id="page-end" class="absolute inset-0 flex flex-col items-center justify-center p-6 page-transition page-hidden z-0 bg-rice-paper">
+                <div class="w-full max-w-sm bg-[#FFFDF9] border border-[#E0DCD3] p-1 shadow-2xl relative mb-6">
+                    <div class="border-2 border-[#9E2A2B] p-6 text-center h-full relative dashed-border">
+                        <div class="flex justify-between items-center mb-6 opacity-50">
+                            <div class="w-2 h-2 bg-[#9E2A2B] rounded-full"></div>
+                            <div class="h-px flex-grow bg-[#9E2A2B] mx-2"></div>
+                            <div class="w-2 h-2 bg-[#9E2A2B] rounded-full"></div>
+                        </div>
+
+                        <div id="end-icon" class="w-16 h-16 mx-auto mb-4 text-[#9E2A2B]"></div>
+                        
+                        <h2 class="text-xs text-[#D4AF37] tracking-[0.4em] uppercase mb-1">评估报告</h2>
+                        <h1 id="end-title" class="text-3xl font-bold text-[#2C3E50] mb-6 font-calligraphy">廉洁福星</h1>
+
+                        <p id="end-desc" class="text-[#5D4037] text-sm leading-relaxed mb-8 text-justify indent-8 border-t border-b border-[#E0DCD3] py-4">
+                            报告描述...
+                        </p>
+                        
+                        <div class="flex justify-end items-end gap-4 mt-4">
+                            <div class="flex flex-col items-end">
+                                <span class="text-[10px] text-[#999] writing-vertical-lr">乙巳年 正月</span>
+                            </div>
+                            <div class="w-20 h-20 border-4 border-[#9E2A2B] rounded-xl flex flex-col items-center justify-center transform -rotate-6 mask-image">
+                                <span class="text-[10px] text-[#9E2A2B] font-bold">福气值</span>
+                                <span id="end-score" class="text-4xl font-black text-[#9E2A2B] font-serif-sc">100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI 求签按钮 (金色) -->
+                <button onclick="aiFortune.draw()" class="cny-btn-gold w-full max-w-sm py-3.5 rounded-lg font-bold tracking-widest shadow-md flex items-center justify-center gap-2 mb-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    <span>求新年廉洁签</span>
+                </button>
+
+                <div class="w-full max-w-sm grid grid-cols-2 gap-4">
+                    <button onclick="game.restart()" class="bg-[#2C3E50] text-[#FDFBF7] py-3.5 rounded font-bold tracking-widest shadow-md hover:bg-[#1a252f] transition-colors text-sm">
+                        再试一次
+                    </button>
+                    <a href="https://www.sisuphos59.me/" class="bg-white text-[#2C3E50] border border-[#2C3E50] flex items-center justify-center py-3.5 rounded font-bold tracking-widest shadow-sm hover:bg-gray-50 transition-colors text-sm">
+                        返回主页
+                    </a>
+                </div>
+                
+                <button onclick="game.showAppendix()" class="mt-6 text-xs text-[#7F8C8D] underline underline-offset-4 decoration-[#D4AF37]">
+                    查看详细复盘
+                </button>
+            </div>
+
+            <!-- 4. 复盘列表 (时间轴) - 修复布局穿透 -->
+            <div id="page-appendix" class="absolute inset-0 flex flex-col bg-rice-paper page-transition page-hidden z-0">
+                <div class="flex-grow overflow-y-auto px-6 py-12 no-scrollbar">
+                    <h2 class="text-2xl font-bold text-[#2C3E50] mb-10 flex items-center gap-3 border-b border-[#D4AF37]/30 pb-4">
+                        <span class="w-1.5 h-6 bg-[#9E2A2B]"></span>
+                        模拟复盘
+                    </h2>
+                    
+                    <div id="appendix-list" class="space-y-0 relative pl-4">
+                        <div class="absolute left-[27px] top-2 bottom-2 w-0.5 bg-[#9E2A2B]/20 z-0"></div>
+                        <!-- JS List -->
+                    </div>
+                    <div class="h-32"></div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 right-0 p-6 bg-[#F7F5F0] border-t border-[#D4AF37]/20">
+                    <button onclick="game.restart()" class="bg-[#2C3E50] text-white font-bold rounded shadow-lg w-full py-3.5 tracking-widest border border-white/10">返回首页</button>
+                </div>
+            </div>
+
+        </main>
+
+        <div id="overlay" class="absolute inset-0 bg-[#2C3E50]/40 backdrop-blur-[2px] opacity-0 pointer-events-none z-30 transition-opacity duration-300" onclick="ui.closeOptions()"></div>
+
+        <!-- 求签弹窗 -->
+        <div id="fortune-modal" class="absolute inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-500 bg-black/60 backdrop-blur-sm p-6">
+            <div id="fortune-loading" class="text-center hidden">
+                <div class="w-20 h-32 border-4 border-[#D4AF37] bg-[#9E2A2B] mx-auto rounded-lg relative animate-shake flex items-center justify-center mb-4 shadow-xl">
+                    <div class="text-[#D4AF37] text-4xl font-calligraphy writing-vertical">签</div>
+                </div>
+                <p class="text-white text-lg tracking-widest animate-pulse">正在求签...</p>
+            </div>
+
+            <div id="fortune-result" class="w-full max-w-sm fortune-card p-1 rounded-xl hidden transform scale-95 transition-transform duration-500">
+                <div class="border border-[#D4AF37]/50 rounded-lg p-6 text-center h-full flex flex-col items-center justify-center relative bg-[#9E2A2B]">
+                    <div class="absolute top-2 left-2 w-10 h-10 border-t-2 border-l-2 border-[#D4AF37] opacity-50 rounded-tl-lg"></div>
+                    <div class="absolute bottom-2 right-2 w-10 h-10 border-b-2 border-r-2 border-[#D4AF37] opacity-50 rounded-br-lg"></div>
+                    
+                    <div class="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center text-[#9E2A2B] font-bold text-xl mb-4 shadow-lg border-2 border-[#FDFBF7]">吉</div>
+                    
+                    <h3 class="text-[#D4AF37] text-xl font-bold font-serif-sc mb-4 tracking-[0.3em]">新年廉洁签</h3>
+                    <div class="w-3/4 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-50 mb-6"></div>
+                    
+                    <p id="fortune-text" class="text-[#FDFBF7] text-lg font-calligraphy leading-loose tracking-widest min-h-[120px] flex items-center justify-center">
+                        <!-- AI 文本 -->
+                    </p>
+                    
+                    <div class="mt-8">
+                        <button onclick="aiFortune.close()" class="px-8 py-2 border border-[#D4AF37] text-[#D4AF37] rounded-full hover:bg-[#D4AF37] hover:text-[#9E2A2B] transition-colors text-sm">收入囊中</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="options-sheet" class="absolute bottom-0 left-0 right-0 sheet-paper z-40 transform translate-y-full flex flex-col max-h-[80vh]">
+            <div class="w-full flex justify-center pt-3 pb-1">
+                <div class="w-8 h-1 bg-[#D4AF37]/40 rounded-full"></div>
+            </div>
+            <div class="px-8 py-6 border-b border-[#E0DCD3]">
+                <h3 class="text-xl font-bold text-[#2C3E50] text-center font-serif-sc">请君抉择</h3>
+                <div class="flex justify-center mt-2">
+                    <div class="w-16 h-px bg-gradient-to-r from-transparent via-[#9E2A2B] to-transparent opacity-50"></div>
+                </div>
+            </div>
+            <div id="options-list" class="flex-grow overflow-y-auto px-6 pt-6 pb-safe space-y-4 pb-10"></div>
+        </div>
+
+        <div id="feedback-sheet" class="absolute bottom-0 left-0 right-0 sheet-paper z-50 transform translate-y-full flex flex-col max-h-[85vh]">
+            <div id="feedback-header" class="min-h-[70px] w-full flex items-center px-8 gap-4 border-b border-[#E0DCD3] py-5"></div>
+            
+            <div class="px-8 py-6 overflow-y-auto no-scrollbar pb-32">
+                <p id="feedback-desc" class="text-[#2C3E50] text-[15px] leading-relaxed mb-8 text-justify font-serif-sc"></p>
+                
+                <div id="reg-box" class="bg-[#FFF5F5] p-5 border-l-4 border-[#C0392B] relative shadow-inner">
+                    <div class="flex items-center gap-2 mb-3 text-[#9E2A2B]">
+                        <span class="text-xs font-bold uppercase tracking-wider border border-[#9E2A2B] px-1 rounded-sm">纪法红线</span>
+                    </div>
+                    <p id="feedback-reg" class="text-sm text-[#5D4037] leading-relaxed opacity-90 text-justify"></p>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 right-0 p-6 bg-[#FDFBF7] border-t border-[#E0DCD3] pb-10">
+                <button id="next-btn" class="cny-btn-seal w-full py-4 font-bold rounded text-lg tracking-widest">
+                    继续前行
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ★★★ 这里填入您的 DeepSeek 或其他兼容 OpenAI 格式的国内大模型 API Key ★★★
+        const apiKey = "sk-c3020bb424e047b485cb0e5888fb9102"; 
+        
+        // ★★★ 这里填入国内大模型的 API 地址 (默认为 DeepSeek) ★★★
+        // 豆包(火山引擎)请查阅文档填入对应的 endpoint，通常是 https://ark.cn-beijing.volces.com/api/v3/chat/completions
+        const API_URL = "https://api.deepseek.com/chat/completions"; 
+
+        const gameConfig = {
+            initialScore: 100,
+            deductionPerError: 25,
+            scenes: [
+                {
+                    id: 1,
+                    role: "张主管 · 物业租赁部",
+                    sceneText: "还有三天就是除夕。长期承租公司商铺的私企老板“老陈”突然造访。为了庆祝续约成功，他把门虚掩上，从包里拿出两条高档香烟和一个厚厚的红包，同时递上一张三亚旅游的行程单。",
+                    imageUrl: "1.png", 
+                    dialogue: [
+                        { speaker: "老陈", text: "张总，这一年多亏您照顾！这点烟酒是给您家里老人的一点心意。听说您今年过年想出去旅游没抢到票，这不，我刚好报了去三亚的团，计划有变去不了了，您带着老婆孩子去吧，车跟酒店都安排好了，纯私人行程，绝对隐蔽，您就当是朋友请客！" }
+                    ],
+                    monologue: "春节去三亚现在可是天价，老婆孩子念叨好久了。而且老陈说是“私人请客”，平时关系也不错，这大过节的，拒绝了是不是太不近人情？",
+                    options: [
+                        { 
+                            text: "告知老陈心意领了，但礼金和旅游绝对不能接受。按时交租就是对工作最大的支持。", 
+                            isCorrect: true,
+                            successDesc: "你守住了底线。老陈虽然尴尬，但对你的原则表示敬佩。你虽然失去了一次免费旅游，但心里坦荡荡，晚上睡觉格外踏实。" 
+                        },
+                        { 
+                            text: "觉得收点烟酒没事，旅游太显眼就算了。收下烟酒红包，退回了旅游行程单。", 
+                            outcome: { 
+                                title: "违规收受礼品礼金", 
+                                desc: "节后公司收到举报，查实你收受管理服务对象财物。", 
+                                reg: "《中国共产党纪律处分条例》第九十七条：收受可能影响公正执行公务的礼品、礼金、消费卡（券）和有价证券、股权、其他金融产品等财物……" 
+                            } 
+                        },
+                        { 
+                            text: "全盘接受。带着全家去了三亚，心想这是“朋友情谊”，只有天知地知。", 
+                            outcome: { 
+                                title: "接受可能影响公正执行公务的旅游安排", 
+                                desc: "天下没有不透风的墙。老陈后来涉及其他案件被调查，供出了为你支付旅游费用的事实。", 
+                                reg: "《中国共产党纪律处分条例》第一百零一条：接受、提供可能影响公正执行公务的宴请或者旅游、健身、娱乐等活动安排……" 
+                            } 
+                        },
+                        { 
+                            text: "婉拒实物，收下老陈坚持要给你家孩子的“压岁钱”。", 
+                            outcome: { 
+                                title: "借机敛财", 
+                                desc: "披上“压岁钱”的外衣，本质依然是权钱交易。这种隐形变异的手段，往往不仅违纪，更可能涉嫌违法。", 
+                                reg: "《中国共产党纪律处分条例》第九十七条：收受可能影响公正执行公务的礼品……。" 
+                            } 
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    role: "刘主任 · 综合办",
+                    sceneText: "腊月二十八，你准备回几百公里外的老家过年，但私家车坏了还在修。你手里正好拿着单位那辆MPV商务车的钥匙，春节期间这辆车封存在库，没人使用。",
+                    imageUrl: "2.png", 
+                    dialogue: [
+                        { speaker: "家人电话", text: "老公，车修好了吗？爸妈问咱们什么时候到呢，要是没车，这么多年货怎么拿回去啊？我看你们单位那辆大车不是闲着吗，借用两天吧。" }
+                    ],
+                    monologue: "车停着也是停着，我就开回去几天，油费我自己出，又不占公家便宜。再说了，我是车队负责人，应该没人会查这种小事……",
+                    options: [
+                        { 
+                            text: "坚决不动公车。租一辆车或者联系顺风车回老家，虽然麻烦点，但心里安稳。", 
+                            isCorrect: true,
+                            successDesc: "虽然租车花了一笔钱，但你过了一个安心年。节后听说兄弟单位有人因为私开公车回老家被通报了，你内心一惊，更加坚定了自己的选择。" 
+                        },
+                        { 
+                            text: "开着单位MPV回老家，不仅有面子还装得多。", 
+                            outcome: { 
+                                title: "公车私用", 
+                                desc: "你开的车身印着单位的名称，在路上被群众随手拍举报。", 
+                                reg: "《中国共产党纪律处分条例》第一百一十六条：违反公务接待管理规定……违反有关规定配备、购买、更换、装饰、使用公务交通工具……" 
+                            } 
+                        },
+                        { 
+                            text: "借了朋友的车回老家，但为了省钱，你拿单位的加油卡给这辆车加满了油。", 
+                            outcome: { 
+                                title: "私车公养", 
+                                desc: "公司检查发现加油卡在节假日期间有异常消费记录，且车型不符。贪小便宜吃大亏。", 
+                                reg: "《中国共产党纪律处分条例》第一百一十七条：违反有关规定……将应当由个人支付的费用，由单位报销或者通过虚列事项、公款核销等方式支付的……" 
+                            } 
+                        },
+                        { 
+                            text: "给跟公司有业务合作关系的老板打电话，让他们派个司机和车送你回老家。", 
+                            outcome: { 
+                                title: "违规借用管理和服务对象车辆", 
+                                desc: "利用职权违规借用管理和服务对象车辆，严重违反廉洁纪律。", 
+                                reg: "《中国共产党纪律处分条例》第九十九条：借用管理和服务对象的钱款、住房、车辆等，影响公正执行公务……" 
+                            } 
+                        }
+                    ]
+                },
+                {
+                    id: 3,
+                    role: "王经理 · 项目部",
+                    sceneText: "大年初二，无聊刷手机。一个平时合作的供应商把你拉进了一个叫“马年大吉”的微信群。群里非常热闹，大家不是在发祝福，而是在玩“发红包踩雷”和“德州扑克”App组局。",
+                    imageUrl: "3.png", 
+                    dialogue: [
+                        { speaker: "供应商李总", text: "王经理，过年好！来来来，群里玩两把，小玩怡情。昨晚老赵一晚上赢了五万多，您手气肯定比他好！链接我私发您了。" }
+                    ],
+                    monologue: "大家都说这是“娱乐”，但我看这输赢金额可不小。李总他们几个都在，我要是不玩，是不是显得不合群？万一赢了呢……",
+                    options: [
+                        { 
+                            text: "果断退群，并严肃告知李总不要拉自己参与此类活动，同时提醒身边同事注意风险。", 
+                            isCorrect: true,
+                            successDesc: "你保持了清醒。后来得知那个群因为涉嫌开设赌场罪被网警端了，群里的参赌人员都被行政处罚。" 
+                        },
+                        { 
+                            text: "觉得手机上玩玩隐蔽，点击链接下载App并在群里参与下注。", 
+                            outcome: { 
+                                title: "参与网络赌博", 
+                                desc: "网络不是法外之地。你的转账记录和登录日志成为了铁证。", 
+                                reg: "《中国共产党纪律处分条例》第三十条：党员有……违反党和国家政策、法律法规、社会公德行为……。" 
+                            } 
+                        },
+                        { 
+                            text: "觉得网上玩不过瘾，于是约了几个供应商老板去茶楼包间打“大注”麻将。", 
+                            outcome: { 
+                                title: "与管理服务对象赌博", 
+                                desc: "这不仅是赌博，更是“围猎”场。供应商故意输钱给你，这就是变相贿赂。现场被公安机关查获，颜面扫地。", 
+                                reg: "《中国共产党纪律处分条例》第九十七条：收受可能影响公正执行公务的礼品、礼金、消费卡（券）和有价证券、股权、其他金融产品等财物......；第一百零一条：接受、提供可能影响公正执行公务的宴请或者旅游、健身、娱乐等活动安排......。" 
+                            } 
+                        },
+                        { 
+                            text: "自己建了个群，拉同事和供应商进来玩，并从中抽取“茶水费”。", 
+                            outcome: { 
+                                title: "聚众赌博（开设赌场）", 
+                                desc: "你已经从违纪跨越到了犯罪的深渊。组织赌博并抽头渔利，涉嫌开设赌场罪，等待你的将是法律的严惩。", 
+                                reg: "《中国共产党纪律处分条例》第三十一条：党员犯罪，有下列情形之一的，应当给予开除党籍处分……" 
+                            } 
+                        }
+                    ]
+                },
+                {
+                    id: 4,
+                    role: "赵专员 · 市场营销部",
+                    sceneText: "大年初五，同学聚会，大家喝得很尽兴。散场时已是凌晨一点，寒风凛冽。你的家离饭店只有不到2公里，叫代驾排队前面还有50人，预估要等一小时。",
+                    imageUrl: "4.png", 
+                    dialogue: [
+                        { speaker: "内心", text: "这么冷的天，等代驾要冻死人啊。反正就几个红绿灯，大过年的交警肯定也放假了。而且我现在头脑很清醒，开慢点绝对没事。" }
+                    ],
+                    monologue: "酒精还在胃里翻腾，但理智告诉我喝酒绝对不能开车。可是大家都走了，就剩我一个人。就一脚油门的事，真的会有事吗？",
+                    options: [
+                        { 
+                            text: "把车扔在饭店停车场，打车回家或者坚持等代驾，绝不触碰方向盘。", 
+                            isCorrect: true,
+                            successDesc: "第二天看到新闻，昨晚那个路口正好有交警夜查。你拍了拍胸口，庆幸自己做出了唯一的正确选择：开车不喝酒，喝酒不开车。" 
+                        },
+                        { 
+                            text: "抱着侥幸心理开车上路，结果在路口被交警拦下，酒精测试显示严重超标。", 
+                            outcome: { 
+                                title: "危险驾驶罪（醉驾）", 
+                                desc: "血液酒精含量超过150mg/100ml，构成危险驾驶罪，属于刑事犯罪，被依法判处刑法规定的主刑，并被开除党籍、开除公职。", 
+                                reg: "《中国共产党纪律处分条例》第三十四条 党员犯罪，有下列情形之一的，应当给予开除党籍处分（一）因故意犯罪被依法判处刑法规定的主刑（含宣告缓刑）。" 
+                            } 
+                        },
+                        { 
+                            text: "喝得不多，只是“抿了一口”，被查出属于饮酒驾驶。", 
+                            outcome: { 
+                                title: "饮酒驾驶（酒驾）", 
+                                desc: "虽未入刑，检察机关作出相对不起诉决定，但属于违法行为。作为国企党员，你将受到撤销党内职务处分或留党察看、开除党籍处分，前途尽失。", 
+                                reg: "《中国共产党纪律处分条例》第三十三条：党员犯罪情节轻微，人民检察院依法作出不起诉决定的，或者人民法院依法作出有罪判决并免予刑事处罚的，应当给予撤销党内职务、留党察看或者开除党籍处分……" 
+                            } 
+                        },
+                        { 
+                            text: "昨晚喝得不少，睡了一觉感觉酒醒了，便开车去上班，谁知体内酒精并未排空，被交警查出“隔夜酒”。", 
+                            outcome: { 
+                                title: "隔夜酒", 
+                                desc: "酒精代谢需要时间，客观上构成了酒驾事实。教训深刻！", 
+                                reg: "《中国共产党纪律处分条例》第三十三条：党员犯罪情节轻微，人民检察院依法作出不起诉决定的，或者人民法院依法作出有罪判决并免予刑事处罚的，应当给予撤销党内职务、留党察看或者开除党籍处分……" 
+                            } 
+                        }
+                    ]
+                }
+            ],
+            endings: {
+                success: { 
+                    title: "廉洁福星", 
+                    desc: "恭喜！在这个充满诱惑的春节，您不仅守住了底线，更护住了家人的团圆。清风两袖朝天去，免得闾阎话短长。", 
+                    color: "text-[#9E2A2B]",
+                    icon: `<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a8 8 0 0 1 8 8v4a8 8 0 0 1-8 8"/><path d="M12 2a8 8 0 0 0-8 8v4a8 8 0 0 0 8 8"/><path d="M12 22v2"/><path d="M8 22h8"/><line x1="12" y1="2" x2="12" y2="22"/></svg>`
+                },
+                failure: { 
+                    title: "警钟长鸣", 
+                    desc: "很遗憾，您在模拟中“翻车”了。现实没有重来，一次放纵可能毁掉职业生涯和家庭幸福。请牢记：廉洁不放假，纪律不打烊。", 
+                    color: "text-[#5D4037]",
+                    icon: `<svg class="w-10 h-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`
+                }
+            }
+        };
+
+        const aiFortune = {
+            modal: document.getElementById('fortune-modal'),
+            loading: document.getElementById('fortune-loading'),
+            result: document.getElementById('fortune-result'),
+            text: document.getElementById('fortune-text'),
+
+            async draw() {
+                this.modal.style.opacity = '1';
+                this.modal.style.pointerEvents = 'auto';
+                this.loading.style.display = 'block';
+                this.result.style.display = 'none';
+
+                const score = game.state.score;
+                let prompt = "";
+                if (score === 100) {
+                    prompt = "你是一位国企纪委的AI廉洁大使。用户在廉洁游戏中获得了100分满分。请为他写一段新年“廉洁福签”。内容要古风雅致，充满春节喜庆氛围，赞美两袖清风带来的福气，强调“清廉是最大的福报”。字数在40字以内，像一句签文。";
+                } else {
+                    prompt = "你是一位国企纪委的AI廉洁大使。用户在廉洁游戏中获得" + score + "分（满分100），有一些失误。请为他写一段新年“廉洁福签”。内容要温暖人心，充满春节氛围，委婉地提醒“守住底线才能守住团圆”，鼓励新的一年行稳致远。字数在40字以内，像一句签文。";
+                }
+
+                // 简单的本地备用文案库，防止无 Key 或请求失败时功能不可用
+                const fallbackFortunes = [
+                    "清风徐来福满门，廉洁修身万事兴。",
+                    "身正心安迎新岁，风清气正福运长。",
+                    "廉不言贫勤是宝，俭能养德福无边。",
+                    "守得清白身自在，便是人间好时节。"
+                ];
+
+                try {
+                    // 如果用户没有填 Key，直接使用备用文案，避免报错
+                    if (!apiKey || apiKey.includes("xxxx")) {
+                        throw new Error("No API Key");
+                    }
+
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            model: "deepseek-chat", // 或者是您使用的其他模型名，如 "doubao-pro-32k" 等
+                            messages: [
+                                {"role": "system", "content": "你是国企廉洁宣传大使。"},
+                                {"role": "user", "content": prompt}
+                            ],
+                            temperature: 0.7
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (!response.ok) throw new Error('API Error');
+                    const text = data.choices?.[0]?.message?.content || fallbackFortunes[0];
+                    this.showResult(text);
+                } catch (e) {
+                    console.log("AI request failed, using fallback:", e);
+                    // 随机选一条备用文案
+                    const randomText = fallbackFortunes[Math.floor(Math.random() * fallbackFortunes.length)];
+                    this.showResult(randomText);
+                }
+            },
+
+            showResult(text) {
+                this.loading.style.display = 'none';
+                this.result.style.display = 'block';
+                // 简单的动画效果
+                setTimeout(() => {
+                    this.result.classList.remove('scale-95');
+                    this.result.classList.add('scale-100');
+                }, 50);
+                this.text.innerText = text;
+            },
+
+            close() {
+                this.modal.style.opacity = '0';
+                this.modal.style.pointerEvents = 'none';
+                this.result.classList.add('scale-95');
+                this.result.classList.remove('scale-100');
+            }
+        };
+
+        const ui = {
+            screens: {
+                start: document.getElementById('page-start'),
+                game: document.getElementById('page-game'),
+                end: document.getElementById('page-end'),
+                appendix: document.getElementById('page-appendix')
+            },
+            header: document.getElementById('nav-header'),
+            progressBar: document.getElementById('progress-bar'),
+            scoreDisplay: document.getElementById('score-display'),
+            optionsSheet: document.getElementById('options-sheet'),
+            feedbackSheet: document.getElementById('feedback-sheet'),
+            overlay: document.getElementById('overlay'),
+            
+            navigateTo(pageId) {
+                const allPages = Object.values(this.screens);
+                const targetPage = this.screens[pageId];
+
+                allPages.forEach(el => {
+                    if (el === targetPage) {
+                        el.classList.remove('page-hidden');
+                        void el.offsetWidth; 
+                        el.classList.add('page-active');
+                    } else {
+                        el.classList.remove('page-active');
+                        el.classList.add('page-hidden');
+                    }
+                });
+
+                if (pageId === 'game') {
+                    this.header.classList.remove('-translate-y-full');
+                } else {
+                    this.header.classList.add('-translate-y-full');
+                }
+            },
+
+            updateScore(score) {
+                const start = parseInt(this.scoreDisplay.innerText);
+                const end = score;
+                const duration = 1000;
+                const startTime = performance.now();
+                
+                const animate = (currentTime) => {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.floor(start + (end - start) * ease);
+                    this.scoreDisplay.innerText = current;
+                    if(progress < 1) requestAnimationFrame(animate);
+                };
+                requestAnimationFrame(animate);
+                this.progressBar.style.width = score + '%';
+            },
+
+            renderScene(data) {
+                document.getElementById('scene-img').src = data.imageUrl;
+                document.getElementById('scene-role-name').innerText = data.role.split(' · ')[0];
+                document.getElementById('scene-text').innerText = data.sceneText;
+                
+                const dialogueArea = document.getElementById('dialogue-area');
+                // 修复：使用 SVG 图标替换单字头像
+                dialogueArea.innerHTML = data.dialogue.map(d => `
+                    <div class="flex gap-4 items-start">
+                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-[#9E2A2B] text-[#FDFBF7] flex items-center justify-center shadow-md border-2 border-[#D4AF37] mt-1">
+                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <div class="chat-paper flex-1 p-3">
+                            <div class="text-[10px] font-bold text-[#9E2A2B] mb-1 uppercase tracking-wider opacity-80">${d.speaker}</div>
+                            <div class="text-[#2D3436] font-sans-std text-[15px] leading-relaxed">${d.text}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.getElementById('monologue-text').innerText = data.monologue;
+
+                const optionsList = document.getElementById('options-list');
+                optionsList.innerHTML = '';
+                const shuffled = [...data.options].sort(() => Math.random() - 0.5);
+                shuffled.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = "option-paper w-full text-left p-5 rounded flex items-start gap-4";
+                    btn.innerHTML = `
+                        <div class="flex-shrink-0 w-5 h-5 mt-0.5 rounded-full border-2 border-[#D4AF37] flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-[#D4AF37] opacity-0 group-active:opacity-100"></div>
+                        </div>
+                        <span class="text-[15px] font-medium text-[#5D4037] leading-snug font-sans-std">${opt.text}</span>
+                    `;
+                    btn.onclick = () => game.handleChoice(opt);
+                    optionsList.appendChild(btn);
+                });
+
+                document.getElementById('game-scroll-area').scrollTop = 0;
+            },
+
+            showOptions() {
+                this.overlay.style.opacity = '1';
+                this.overlay.style.pointerEvents = 'auto';
+                this.optionsSheet.classList.remove('translate-y-full');
+            },
+
+            closeOptions() {
+                this.overlay.style.opacity = '0';
+                this.overlay.style.pointerEvents = 'none';
+                this.optionsSheet.classList.add('translate-y-full');
+            },
+
+            showFeedback(outcome, isCorrect, nextCallback) {
+                this.closeOptions();
+                
+                setTimeout(() => {
+                    this.overlay.style.opacity = '1';
+                    this.overlay.style.pointerEvents = 'auto';
+                    this.feedbackSheet.classList.remove('translate-y-full');
+                }, 300);
+
+                const header = document.getElementById('feedback-header');
+                const desc = document.getElementById('feedback-desc');
+                const reg = document.getElementById('feedback-reg');
+                const regBox = document.getElementById('reg-box');
+                const btn = document.getElementById('next-btn');
+
+                if (isCorrect) {
+                    header.className = "min-h-[70px] py-4 w-full flex items-center px-8 gap-4 border-b border-[#E0DCD3] bg-[#F5F9F6] text-[#2F855A] rounded-t-[20px]";
+                    header.innerHTML = `
+                        <div class="w-8 h-8 rounded-full border border-[#2F855A] flex items-center justify-center flex-shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+                        <span class="font-bold text-lg font-serif-sc tracking-wide">合规抉择</span>
+                    `;
+                    desc.innerText = outcome.successDesc;
+                    regBox.style.display = 'none';
+                    btn.innerText = "继续前行";
+                    btn.className = "cny-btn-seal w-full py-4 font-bold rounded text-lg tracking-widest";
+                } else {
+                    header.className = "min-h-[70px] py-4 w-full flex items-center px-8 gap-4 border-b border-[#E0DCD3] bg-[#FFF5F5] text-[#9E2A2B] rounded-t-[20px]";
+                    header.innerHTML = `
+                        <div class="w-8 h-8 rounded-full border border-[#9E2A2B] flex items-center justify-center flex-shrink-0"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+                        <span class="font-bold text-lg leading-tight font-serif-sc tracking-wide">${outcome.title}</span>
+                    `;
+                    desc.innerText = outcome.desc;
+                    regBox.style.display = 'block';
+                    reg.innerText = outcome.reg;
+                    btn.innerText = "重新思考";
+                    btn.className = "w-full py-4 font-bold rounded text-lg tracking-widest bg-white border border-[#9E2A2B] text-[#9E2A2B]";
+                }
+
+                btn.onclick = () => {
+                    this.feedbackSheet.classList.add('translate-y-full');
+                    this.overlay.style.opacity = '0';
+                    this.overlay.style.pointerEvents = 'none';
+                    setTimeout(nextCallback, 400);
+                };
+            }
+        };
+
+        const game = {
+            state: { actIndex: 0, score: 100, history: [] },
+            start() {
+                this.state.score = 100;
+                this.state.actIndex = 0;
+                this.state.history = [];
+                ui.updateScore(100);
+                this.loadScene();
+                ui.navigateTo('game');
+            },
+            loadScene() {
+                const scene = gameConfig.scenes[this.state.actIndex];
+                ui.renderScene(scene);
+            },
+            handleChoice(opt) {
+                const scene = gameConfig.scenes[this.state.actIndex];
+                if (opt.isCorrect) {
+                    this.state.history.push({ scene: scene.role, result: "合规", desc: "坚持原则，规避风险", isGood: true });
+                    ui.showFeedback(opt, true, () => this.nextLevel());
+                } else {
+                    this.state.score = Math.max(0, this.state.score - gameConfig.deductionPerError);
+                    ui.updateScore(this.state.score);
+                    this.state.history.push({ scene: scene.role, result: opt.outcome.title, desc: opt.outcome.desc, isGood: false });
+                    ui.showFeedback(opt.outcome, false, () => {});
+                }
+            },
+            nextLevel() {
+                this.state.actIndex++;
+                if (this.state.actIndex < gameConfig.scenes.length) {
+                    this.loadScene();
+                } else {
+                    this.finish();
+                }
+            },
+            finish() {
+                const isSuccess = this.state.score >= 100; 
+                const ending = isSuccess ? gameConfig.endings.success : gameConfig.endings.failure;
+                document.getElementById('end-score').innerText = this.state.score;
+                document.getElementById('end-title').innerText = ending.title;
+                document.getElementById('end-desc').innerText = ending.desc;
+                const iconContainer = document.getElementById('end-icon');
+                iconContainer.innerHTML = ending.icon;
+                ui.navigateTo('end');
+            },
+            showAppendix() {
+                const list = document.getElementById('appendix-list');
+                list.innerHTML = this.state.history.map((item, idx) => `
+                    <div class="relative pl-8 py-3 group">
+                         <div class="absolute left-[-5px] top-5 w-3 h-3 rounded-full bg-[#FDFBF7] border-2 ${item.isGood ? 'border-[#9E2A2B]' : 'border-[#7F8C8D]'} z-10">
+                            ${item.isGood ? '<div class="w-1 h-1 bg-[#9E2A2B] rounded-full m-0.5"></div>' : ''}
+                         </div>
+                         <div class="cny-card p-5 hover:shadow-md transition-shadow">
+                            <div class="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wider mb-1">场景 ${idx + 1}</div>
+                            <h4 class="font-bold text-[#2D3436] text-[15px] mb-2 font-serif-sc">${item.result}</h4>
+                            <p class="text-xs text-[#5D4037] leading-relaxed font-sans-std border-t border-[#E0DCD3] pt-2 opacity-80">${item.desc}</p>
+                        </div>
+                    </div>
+                `).join('');
+                ui.navigateTo('appendix');
+            },
+            restart() {
+                ui.navigateTo('start');
+            }
+        };
+
+        document.body.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.no-scrollbar') || e.target.closest('.overflow-y-auto')) {} else { e.preventDefault(); }
+        }, { passive: false });
+    </script>
+</body>
+</html>
